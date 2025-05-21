@@ -41,6 +41,6 @@ You can view it on __[kaggle.](https://www.kaggle.com/datasets/nikolasgegenava/m
 
 		python train.py
 
-3. Run the Streamlit app:
+4. Run the Streamlit app:
 
 		streamlit run app.py

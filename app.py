@@ -1,10 +1,33 @@
+import os
+import requests
 import streamlit as st
+st.set_page_config(page_title='Instrument Classifier', layout='centered')
+
 from PIL import Image
 import torch
 from torchvision import transforms, models
 
-# ====== CONFIG ======
 from config import IMG_SIZE, MODEL_PATH, CLASS_NAMES
+
+# Backed-up, pretrained model
+MODEL_DOWNLOAD_URL = 'https://huggingface.co/jray-8/resnet-instrument-classifier/resolve/main/resnet18_instruments.pth'
+
+# ====== ENSURE MODEL EXISTS ======
+def download_model():
+	if not os.path.exists(MODEL_PATH):
+		with st.spinner("Downloading model..."):
+			try:
+				response = requests.get(MODEL_DOWNLOAD_URL, stream=True)
+				response.raise_for_status()
+				with open(MODEL_PATH, "wb") as f:
+					for chunk in response.iter_content(chunk_size=8192):
+						if chunk:
+							f.write(chunk)
+				st.success("Model downloaded successfully.")
+			except Exception as e:
+				st.error(f"Failed to download model: {e}")
+
+download_model()
 
 # ====== LOAD MODEL ======
 @st.cache_resource
@@ -26,8 +49,6 @@ transform = transforms.Compose([
 ])
 
 # ====== UI ======
-st.set_page_config(page_title='Instrument Classifier', layout='centered')
-
 st.title('🎶 Instrument Classifier')
 st.caption('Upload an image — get the instrument. Powered by PyTorch + ResNet18.')
 
@@ -35,24 +56,24 @@ st.markdown('##### 🎼 Supported Instruments:')
 
 rows = [CLASS_NAMES[i:i+5] for i in range(0, len(CLASS_NAMES), 5)]
 for row in rows:
-    cols = st.columns(len(row))
-    for i, cls in enumerate(row):
-        cols[i].markdown(
-            f'''
-            <div style='
-                background-color: #f0f2f6;
-                padding: 8px 12px;
-                border-radius: 12px;
-                text-align: center;
-                font-weight: 600;
-                font-size: 14px;
-                color: #000000;
-                border: 1px solid #d3d3d3;
+	cols = st.columns(len(row))
+	for i, cls in enumerate(row):
+		cols[i].markdown(
+			f'''
+			<div style='
+				background-color: #f0f2f6;
+				padding: 8px 12px;
+				border-radius: 12px;
+				text-align: center;
+				font-weight: 600;
+				font-size: 14px;
+				color: #000000;
+				border: 1px solid #d3d3d3;
 				margin-bottom: 10px;
-            '>{cls.title()}</div>
-            ''',
-            unsafe_allow_html=True
-        )
+			'>{cls.title()}</div>
+			''',
+			unsafe_allow_html=True
+		)
 
 st.markdown('---')
 

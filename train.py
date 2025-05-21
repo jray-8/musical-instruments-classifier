@@ -41,7 +41,7 @@ val_loader = DataLoader(val_ds, batch_size=BATCH_SIZE)
 test_loader = DataLoader(test_ds, batch_size=BATCH_SIZE)
 
 # ======= MODEL =======
-model = models.resnet18(pretrained=True)
+model = models.resnet18(weights=models.ResNet18_Weights.IMAGENET1K_V1)
 
 # Freeze base layers
 for param in model.parameters():
