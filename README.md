@@ -2,6 +2,8 @@
 
 A deep learning web app that classifies musical instruments from images using a fine-tuned ResNet18 model.
 
+- [Live Demo on Streamlit Cloud](https://musical-instruments-classifier.streamlit.app/)
+
 ## 🔍 Supported Instruments
 Accordion, Banjo, Drum, Flute, Guitar, Harmonica, Saxophone, Sitar, Tabla, Violin
 
@@ -16,7 +18,7 @@ This project uses a curated image dataset of musical instruments, organized into
 
 The dataset (~6MB) is included in the `data/` folder.
 
-You can view it on __[kaggle.](https://www.kaggle.com/datasets/nikolasgegenava/music-instruments)__  
+You can view it on __[kaggle.](https://www.kaggle.com/datasets/nikolasgegenava/music-instruments)__
 
 ## 🧠 Tech Stack
 - Python
